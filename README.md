@@ -1,0 +1,1 @@
+# SLT-Bachelors-Thesis-Galina-Angelova
