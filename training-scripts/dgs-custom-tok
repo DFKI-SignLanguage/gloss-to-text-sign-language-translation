@@ -1,0 +1,47 @@
+#!/bin/sh
+srun \
+-K \
+--container-mounts=/netscratch:/netscratch,/ds:/ds,$HOME:$HOME \
+--container-workdir=/netscratch/angelova/experiments/sl-translation \
+--container-image=/netscratch/avramidis/containers/lefterav+marian-nmt+1.10.0_sentencepiece_cuda-11.3.0_1.sqsh \
+--ntasks=1 \
+--nodes=1 \
+--gpus=4 \
+-p V100-16GB \
+/marian/build/marian train \
+--devices 0 1 2 3 \
+--model /netscratch/angelova/experiments/sl-translation/model/dgs_nem_5/dgs_nem_5.npz \
+--type s2s \
+--dim-rnn 1024 \
+--dim-emb 512 \
+--enc-depth 1 \
+--dec-depth 2 \
+--enc-cell lstm \
+--enc-cell-depth 2 \
+--dec-cell-base-depth 2 \
+--dec-cell lstm \
+--layer-normalization \
+--dropout-rnn 0.5 \
+--dropout-src 0.4 \
+--dropout-trg 0.4 \
+--label-smoothing 0.2 \
+--max-length 200 \
+--mini-batch 32 \
+--learn-rate 0.0005 \
+--lr-report \
+--optimizer adam \
+--early-stopping 10 \
+--beam-size 5 \
+--cost-type=ce-mean-words \
+--valid-metrics bleu-detok perplexity ce-mean-words \
+--dim-vocabs 2600 2600 \
+--sentencepiece-options '--model_type=word --vocab_size=2600 --hard_vocab_limit=true' \
+--train-sets /netscratch/angelova/data/sl-translation/glosses_tok_train.txt /netscratch/angelova/data/sl-translation/german_train.txt \
+--vocabs /netscratch/angelova/experiments/sl-translation/model/dgs_nem_5/vocab.gl_dgs_nem_5.spm /netscratch/angelova/experiments/sl-translation/model/dgs_nem_5/vocab.de_dgs_nem_5.spm \
+--valid-sets /netscratch/angelova/experiments/sl-translation/glosses_tok_dev.txt /netscratch/angelova/experiments/sl-translation/german_dev.txt \
+--log /netscratch/angelova/experiments/sl-translation/model/dgs_nem_5/valid_dgs_nem_5.log \
+--lr-warmup 16000 \
+--keep-best \
+--valid-freq 400 \
+--disp-freq 1000 \
+--optimizer-params 0.9 0.98 1e-09 \

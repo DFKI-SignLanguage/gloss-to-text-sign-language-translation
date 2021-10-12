@@ -1,0 +1,34 @@
+#!/bin/sh
+srun \
+-K \
+--container-mounts=/netscratch:/netscratch,/ds:/ds,$HOME:$HOME \
+--container-workdir=/netscratch/angelova/experiments/sl-translation \
+--container-image=/netscratch/avramidis/containers/lefterav+marian-nmt+1.10.0_sentencepiece_cuda-11.3.0_1.sqsh \
+--ntasks=1 \
+--nodes=1 \
+--gpus=4 \
+-p RTX2080Ti \
+/marian/build/marian train \
+--devices 0 1 2 3 \
+--model /netscratch/angelova/experiments/sl-translation/model/phoenix_baseline/phoenix_baseline.npz \
+--type s2s \
+--dim-rnn 1024 \
+--dim-emb 512 \
+--layer-normalization \
+--mini-batch 64 \
+--learn-rate 0.0005 \
+--optimizer adam \
+--early-stopping 10 \
+--cost-type=ce-mean-words \
+--valid-metrics bleu-detok perplexity ce-mean-words translation \
+--dim-vocabs 1000 1000 \
+--sentencepiece-options '--model_type=word --vocab_size=1000 --hard_vocab_limit=true' \
+--train-sets /netscratch/angelova/data/sl-translation/phoenix_train_glosses.txt /netscratch/angelova/data/sl-translation/phoenix_train_sentences.txt \
+--vocabs /netscratch/angelova/experiments/sl-translation/model/phoenix_baseline/vocab.ph_gl_baseline.spm /netscratch/angelova/experiments/sl-translation/model/phoenix_baseline/vocab.ph_de_baseline.spm \
+--valid-sets /netscratch/angelova/experiments/sl-translation/phoenix_dev_glosses.txt /netscratch/angelova/experiments/sl-translation/phoenix_dev_sentences.txt \
+--log /netscratch/angelova/experiments/sl-translation/model/phoenix_baseline/valid_ph_baseline.log \
+--lr-warmup 16000 \
+--keep-best \
+--valid-freq 400 \
+--disp-freq 1000 \
+--optimizer-params 0.9 0.98 1e-09 \

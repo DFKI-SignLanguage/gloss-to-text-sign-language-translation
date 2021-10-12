@@ -1,0 +1,47 @@
+#!/bin/sh
+srun \
+-K \
+--container-mounts=/netscratch:/netscratch,/ds:/ds,$HOME:$HOME \
+--container-workdir=/netscratch/angelova/experiments/sl-translation \
+--container-image=/netscratch/avramidis/containers/lefterav+marian-nmt+1.10.0_sentencepiece_cuda-11.3.0_1.sqsh \
+--ntasks=1 \
+--nodes=1 \
+--gpus=4 \
+-p GTX1080Ti \
+/marian/build/marian train \
+--devices 0 1 2 3 \
+--model /netscratch/angelova/experiments/sl-translation/model/phoenix_nem_3/phoenix_nem_3.npz \
+--type s2s \
+--dim-rnn 1024 \
+--dim-emb 512 \
+--enc-depth 1 \
+--dec-depth 2 \
+--enc-cell lstm \
+--enc-cell-depth 2 \
+--dec-cell-base-depth 2 \
+--dec-cell lstm \
+--layer-normalization \
+--dropout-rnn 0.5 \
+--dropout-src 0.4 \
+--dropout-trg 0.4 \
+--label-smoothing 0.2 \
+--max-length 200 \
+--mini-batch 16 \
+--learn-rate 0.0001 \
+--lr-report
+--optimizer adam \
+--early-stopping 10 \
+--beam-size 2 \
+--cost-type=ce-mean-words \
+--valid-metrics bleu-detok perplexity ce-mean-words translation \
+--dim-vocabs 2000 2000 \
+--sentencepiece-options '--model_type=bpe --vocab_size=2000 --hard_vocab_limit=true' \
+--train-sets /netscratch/angelova/data/sl-translation/phoenix_train_glosses.txt /netscratch/angelova/data/sl-translation/phoenix_train_sentences.txt \
+--vocabs /netscratch/angelova/experiments/sl-translation/model/phoenix_nem_3/vocab.ph_gl_nem_3.spm /netscratch/angelova/experiments/sl-translation/model/phoenix_nem_3/vocab.ph_de_nem_3.spm \
+--valid-sets /netscratch/angelova/experiments/sl-translation/phoenix_dev_glosses.txt /netscratch/angelova/experiments/sl-translation/phoenix_dev_sentences.txt \
+--log /netscratch/angelova/experiments/sl-translation/model/phoenix_nem_3/valid_ph_nem_3.log \
+--lr-warmup 16000 \
+--keep-best \
+--valid-freq 400 \
+--disp-freq 1000 \
+--optimizer-params 0.9 0.98 1e-09 \
