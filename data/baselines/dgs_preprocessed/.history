@@ -1,0 +1,8 @@
+2022-03-17.23-41-48 cp /netscratch/angelova/data/sl-translation/german_*txt .
+2022-03-17.23-42-03 cp /netscratch/angelova/data/sl-translation/glosses_*txt .
+2022-03-17.23-42-47 cp /netscratch/angelova/data/sl-translation/glosses_*txt .
+2022-03-17.23-42-50 mkdir train
+2022-03-17.23-42-53 mv * train/
+2022-03-17.23-43-01 mkdir test
+2022-03-17.23-43-24 vim README 
+2022-03-17.23-44-53 mkdir dev

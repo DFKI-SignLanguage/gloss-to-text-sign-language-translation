@@ -1,0 +1,10 @@
+2022-03-29.16-55-37 cp /netscratch/angelova/experiments/sl-translation/phoenix_*txt .
+2022-03-29.16-55-58 cp /netscratch/angelova/data/sl-translation/phoenix_train_*txt
+2022-03-29.16-56-00 cp /netscratch/angelova/data/sl-translation/phoenix_train_*txt .
+2022-03-29.16-56-17 less phoenix_train_glosses_concat.txt
+2022-03-29.16-57-13 vim README
+2022-04-01.12-50-00 less phoenix_train_sentences.txt
+2022-04-01.12-50-39 less phoenix_train_glosses.txt
+2022-04-01.12-50-49 less phoenix_train_sentences.txt
+2022-04-01.12-51-14 less phoenix_train_sentences.txt
+2022-04-01.12-51-33 less phoenix_train_glosses_lowercased.txt
