@@ -25,6 +25,8 @@ The structure of the repository is as following:
 
 ## Citation
 
+This work has been done with the aim to contribute to the research towards the automatic translation of sign languages. We encourage any further research on top of our work and we are happy to answer related questions. The code is released under the GPL-3.0 License.
+
 If you use the code or derivatives of this repository, please cite:
 
 ```
@@ -44,3 +46,6 @@ If you use the code or derivatives of this repository, please cite:
 ```
 
 More citation formats [here](https://aclanthology.org/2022.acl-srw.21/)
+
+Please note that the corpora ([Phoenix 2014T](https://www-i6.informatik.rwth-aachen.de/~koller/RWTH-PHOENIX-2014-T/) and [DGS Corpus](https://www.sign-lang.uni-hamburg.de/meinedgs/ling/start_en.html)) have their own licenses and any use of them should be conforming with them and include the appropriate citations. 
+
